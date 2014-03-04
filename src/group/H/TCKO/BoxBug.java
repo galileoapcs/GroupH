@@ -20,6 +20,7 @@ public class BoxBug extends Bug
         steps = 0;
         sideLength = length;
     }
+    //comment comment
 
     /**
      * Moves to the next location of the square.
