@@ -162,7 +162,13 @@ public class TetrisBlock extends TetrisBug {
 		} else if (rotationPos == 1) {
 
 			// Your code goes here ... see Question 1
-			
+			// only one block must move
+			nextLoc = new Location(getLocation().getRow() + 1,
+					getLocation().getCol() - 1);
+			if (gr.isValid(nextLoc) && gr.get(nextLoc) == null) {
+				moveTo(nextLoc);
+				rotationPos = (rotationPos + 1) % 2;// will be % 4 with 4 blocks
+			}			
 		}
 
 	}
