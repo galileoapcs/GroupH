@@ -98,34 +98,12 @@ public class TetrisGame {
 	 * and ask each actor located above the just deleted row to act and
 	 * update the score++
 	 */
-	
-	private static boolean isFullRow(int row) {
-		Grid<Actor> gr = world.getGrid();
-		ArrayList<Location> list = gr.getOccupiedLocations();
-		int count = 0;
-		for (int col=1; col<10; col++) {
-			if (list.contains(new Location(row,col))) {
-				count++;
-			}
-		}
-		if (count == 9) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
 	public static void removeCompleteRows() {
 		Grid<Actor> gr = world.getGrid();
+
+		//Your code goes here ... see Question 2
 		
-		for (int row=1; row<gr.getNumRows(); row++) {
-			if (isFullRow(row)) {
-				for(int col=1; col<11; col++) {
-					gr.remove(new Location(row,col));
-				}
-				score++;
-			}
-		}
+
 	}
 	
 
