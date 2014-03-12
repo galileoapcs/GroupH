@@ -58,6 +58,8 @@ public class TetrisGame {
 					currentBlock.act();
 				if (key.equals("pressed LEFT"))
 					currentBlock.moveLeft();
+				if (key.equals("pressed SPACE"))
+					currentBlock.dropDown();
 				world.show();
 				return true;
 			}
@@ -103,15 +105,25 @@ public class TetrisGame {
 		Grid<Actor> gr = world.getGrid();
 		ArrayList<Location> list = gr.getOccupiedLocations();
 		int count = 0;
-		for (int col=1; col<10; col++) {
+		for (int col=1; col<11; col++) {
 			if (list.contains(new Location(row,col))) {
 				count++;
 			}
 		}
-		if (count == 9) {
+		if (count == 10) {
 			return true;
 		} else {
 			return false;
+		}
+	}
+	
+	public static void pushRowsDown(int row) {
+		Grid<Actor> gr = world.getGrid();
+		ArrayList<Location> actors = gr.getOccupiedLocations();
+		for(Location loc:actors) {
+			if (loc.getCol() > 0 && loc.getCol() < 11 && loc.getRow() < row) {
+				gr.get(loc).moveTo(new Location(loc.getRow()+1, loc.getCol()));
+			}
 		}
 	}
 	
@@ -123,6 +135,7 @@ public class TetrisGame {
 				for(int col=1; col<11; col++) {
 					gr.remove(new Location(row,col));
 				}
+				pushRowsDown(row);
 				score++;
 			}
 		}

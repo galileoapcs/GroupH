@@ -71,6 +71,12 @@ public class TetrisBlock extends TetrisBug {
 		else if (!TetrisGame.currentBlock.canMoveDown())
 			TetrisGame.nextTetrisBlock();
 	}
+	
+	public void dropDown() {
+		while(TetrisGame.currentBlock.canMoveDown()) {
+			act();
+		}
+	}
 
 	/**
 	 * Move the TetrisBlock and its TetrisBugs one cell. (they should already be
@@ -126,13 +132,22 @@ public class TetrisBlock extends TetrisBug {
 	 * they can move, they will move one cell (to the right)
 	 */
 	public void moveLeft() {
-		setDirection(-90);
+
+		setDirection(270);
 		for (TetrisBug tb : blocks)
-			tb.setDirection(-90);
-		if(blocks.get(0).canMove()){
-			blocks.get(0).move();
-			move();
+			tb.setDirection(270);
+		if (rotationPos == 0) {
+			if (canMove() && blocks.get(0).canMove()) {
+				blocks.get(0).move();
+				move();
+			}
+		} else if (rotationPos == 1) {
+			if (canMove()) {
+				move();
+				blocks.get(0).move();
+			}
 		}
+
 	}
 
 	/**
