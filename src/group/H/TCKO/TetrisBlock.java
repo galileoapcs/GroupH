@@ -136,15 +136,18 @@ public class TetrisBlock extends TetrisBug {
 	 * they can move, they will move one cell (to the right)
 	 */
 	public void moveLeft() {
-
-		setDirection(270);
+		setDirection(-90);
 		for (TetrisBug tb : blocks)
+<<<<<<< HEAD
 			tb.setDirection(270);
 		if(blocks.get(0).canMove()) {
+=======
+			tb.setDirection(-90);
+		if (blocks.get(0).canMove()){
+>>>>>>> 6aa83d8535d98b1c90882c0ae01cd952b57125cd
 			blocks.get(0).move();
 			move();
 		}
-
 	}
 
 	/**
