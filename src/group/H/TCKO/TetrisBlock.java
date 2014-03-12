@@ -71,6 +71,12 @@ public class TetrisBlock extends TetrisBug {
 		else if (!TetrisGame.currentBlock.canMoveDown())
 			TetrisGame.nextTetrisBlock();
 	}
+	
+	public void dropDown() {
+		while(TetrisGame.currentBlock.canMoveDown()) {
+			act();
+		}
+	}
 
 	/**
 	 * Move the TetrisBlock and its TetrisBugs one cell. (they should already be
