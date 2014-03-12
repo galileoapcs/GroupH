@@ -56,6 +56,10 @@ public class TetrisBlock extends TetrisBug {
 		// TetrisBlock subclasses will add two more TetrisBug objects to blocks
 
 	}
+	
+	public TetrisBlock(Color _color) {
+		super(_color);
+	}
 
 	/**
 	 * TetrisBlock and its TetrisBugs must face down (direction 180) If they can
