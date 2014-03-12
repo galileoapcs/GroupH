@@ -3,6 +3,7 @@ package group.H.TCKO;
 //TetrisBlock.java
 import info.gridworld.actor.*;
 import info.gridworld.grid.*;
+
 import java.util.ArrayList;
 import java.awt.Color;
 
@@ -32,36 +33,24 @@ public class TetrisBlockZ extends TetrisBlock {
 	 * default constructor
 	 */
 	public TetrisBlockZ() {
-		super(Color.green);
-		rotationPos = 0;
+		super();
 		gr = TetrisGame.world.getGrid();
-
-		// ==> LAMEST GAME OVER EVER !!! <==
-		// if the Grid does not have room for the TetrisBlock.. GameOver
 		if (gr.get(new Location(1, 4)) != null
-				|| gr.get(new Location(1, 5)) != null || gr.get(new Location(0, 5)) != null
 				|| gr.get(new Location(0, 6)) != null) {
 			javax.swing.JOptionPane.showMessageDialog(null, "Score: "
 					+ TetrisGame.score, "GAME OVER!", 0);
 			System.exit(0);
 		}
-		putSelfInGrid(gr, new Location(1, 5));
-
+		TetrisBug b;
+		TetrisBug c;
 		blocks = new ArrayList<TetrisBug>();
-		TetrisBug a;
 		// create TetrisBugs for ArrayList blocks and put them in Grid gr
-		a = new TetrisBug(Color.green);
-		a.putSelfInGrid(gr, new Location(1, 4));
-		blocks.add(a);
-		a = new TetrisBug(Color.green);
-		a.putSelfInGrid(gr, new Location(1, 5));
-		blocks.add(a);
-		a = new TetrisBug(Color.green);
-		a.putSelfInGrid(gr, new Location(0, 5));
-		blocks.add(a);
-		a = new TetrisBug(Color.green);
-		a.putSelfInGrid(gr, new Location(0, 6));
-		blocks.add(a);
+		b = new TetrisBug(Color.blue);
+		b.putSelfInGrid(gr, new Location(1, 4));
+		blocks.add(b);
+		c = new TetrisBug(Color.blue);
+		c.putSelfInGrid(gr, new Location(0, 6));
+		blocks.add(c);
 		
 
 		// TetrisBlock subclasses will add two more TetrisBug objects to blocks
@@ -112,9 +101,9 @@ public class TetrisBlockZ extends TetrisBlock {
 	 */
 	public boolean canMoveDown() {
 		if (rotationPos == 0)
-			return canMove();
+			return canMove() && blocks.get(1).canMove() && blocks.get(2).canMove();
 		else if (rotationPos == 1)
-			return canMove() && blocks.get(0).canMove();
+			return blocks.get(0).canMove() && blocks.get(1).canMove();
 		else
 			return true;
 	}
@@ -128,14 +117,16 @@ public class TetrisBlockZ extends TetrisBlock {
 		for (TetrisBug tb : blocks)
 			tb.setDirection(90);
 		if (rotationPos == 0) {
-			if (canMove() && blocks.get(0).canMove()) {
-				blocks.get(0).move();
+			if (blocks.get(2).canMove() && canMove()) {
 				move();
+				for (TetrisBug tb: blocks) 
+					tb.move();
 			}
 		} else if (rotationPos == 1) {
-			if (canMove()) {
+			if (canMove() && blocks.get(0).canMove() && blocks.get(2).canMove()) {
 				move();
-				blocks.get(0).move();
+				for (TetrisBug tb: blocks) 
+					tb.move();
 			}
 		}
 	}
@@ -146,18 +137,20 @@ public class TetrisBlockZ extends TetrisBlock {
 	 */
 	public void moveLeft() {
 
-		setDirection(270);
+		setDirection(-90);
 		for (TetrisBug tb : blocks)
-			tb.setDirection(270);
+			tb.setDirection(-90);
 		if (rotationPos == 0) {
-			if (canMove() && blocks.get(0).canMove()) {
-				blocks.get(0).move();
+			if (blocks.get(0).canMove() && blocks.get(1).canMove()) {
 				move();
+				for (TetrisBug tb: blocks) 
+					tb.move();
 			}
 		} else if (rotationPos == 1) {
-			if (canMove()) {
+			if (blocks.get(0).canMove() && blocks.get(1).canMove() && blocks.get(2).canMove()) {
 				move();
-				blocks.get(0).move();
+				for (TetrisBug tb: blocks) 
+					tb.move();
 			}
 		}
 
@@ -169,25 +162,39 @@ public class TetrisBlockZ extends TetrisBlock {
 	 * rotationPos... Update rotationPos.
 	 */
 	public void rotate() {
-		Location nextLoc;
+		Location newLoc;
+		Location newLoc1;
+		Location newLoc2;
 		if (rotationPos == 0) {
-			// only one block must move
-			nextLoc = new Location(getLocation().getRow() - 1,
-					getLocation().getCol() + 1);
-			if (gr.isValid(nextLoc) && gr.get(nextLoc) == null) {
-				moveTo(nextLoc);
-				rotationPos = (rotationPos + 1) % 2;// will be % 4 with 4 blocks
+			newLoc = new Location(blocks.get(0).getLocation().getRow() + 1,
+					blocks.get(0).getLocation().getCol() - 1);
+			newLoc1 = new Location(blocks.get(1).getLocation().getRow() + 1,
+					blocks.get(1).getLocation().getCol() + 1);
+			newLoc2 = new Location(blocks.get(2).getLocation().getRow(),
+					blocks.get(2).getLocation().getCol() - 2);
+			if (gr.isValid(newLoc) && gr.get(newLoc) == null || 
+					gr.isValid(newLoc1) && gr.get(newLoc1) == null || 
+					gr.isValid(newLoc2) && gr.get(newLoc2) == null) {
+				blocks.get(0).moveTo(newLoc);
+				blocks.get(1).moveTo(newLoc);
+				blocks.get(2).moveTo(newLoc);
+				rotationPos = 1;
 			}
 		} else if (rotationPos == 1) {
-
-			// Your code goes here ... see Question 1
-			// only one block must move
-			nextLoc = new Location(getLocation().getRow() + 1,
-					getLocation().getCol() - 1);
-			if (gr.isValid(nextLoc) && gr.get(nextLoc) == null) {
-				moveTo(nextLoc);
-				rotationPos = (rotationPos + 1) % 2;// will be % 4 with 4 blocks
-			}			
+			newLoc = new Location(blocks.get(0).getLocation().getRow() - 1,
+					blocks.get(0).getLocation().getCol() + 1);
+			newLoc1 = new Location(blocks.get(1).getLocation().getRow() - 1,
+					blocks.get(1).getLocation().getCol() - 1);
+			newLoc2 = new Location(blocks.get(2).getLocation().getRow(),
+					blocks.get(2).getLocation().getCol() + 2);
+			if (gr.isValid(newLoc) && gr.get(newLoc) == null || 
+					gr.isValid(newLoc1) && gr.get(newLoc1) == null || 
+					gr.isValid(newLoc2) && gr.get(newLoc2) == null) {
+				blocks.get(0).moveTo(newLoc);
+				blocks.get(1).moveTo(newLoc);
+				blocks.get(2).moveTo(newLoc);
+				rotationPos = 0;
+			}		
 		}
 
 	}
