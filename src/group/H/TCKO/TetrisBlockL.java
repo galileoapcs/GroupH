@@ -12,7 +12,7 @@ import java.awt.Color;
  * (direction 180) if it can, otherwise it will ask TetrisGame to make a new
  * TetrisBlock for the game.
  */
-public class TetrisBlockZ extends TetrisBlock {
+public class TetrisBlockL extends TetrisBlock {
 
 	/**
 	 * value of the current rotation position {0,1,2 or 3}
@@ -32,13 +32,13 @@ public class TetrisBlockZ extends TetrisBlock {
 	/**
 	 * default constructor
 	 */
-	public TetrisBlockZ() {
+	public TetrisBlockL() {
 		super();
 		rotationPos = super.rotationPos;
 		blocks = super.blocks;
 		gr = super.gr;
-		if (gr.get(new Location(1, 4)) != null
-				|| gr.get(new Location(0, 6)) != null) {
+		if (gr.get(new Location(2, 5)) != null
+				|| gr.get(new Location(2, 6)) != null) {
 			javax.swing.JOptionPane.showMessageDialog(null, "Score: "
 					+ TetrisGame.score, "GAME OVER!", 0);
 			System.exit(0);
@@ -47,10 +47,10 @@ public class TetrisBlockZ extends TetrisBlock {
 		TetrisBug c;
 		// create TetrisBugs for ArrayList blocks and put them in Grid gr
 		b = new TetrisBug(Color.blue);
-		b.putSelfInGrid(gr, new Location(1, 4));
+		b.putSelfInGrid(gr, new Location(2, 5));
 		blocks.add(b);
 		c = new TetrisBug(Color.blue);
-		c.putSelfInGrid(gr, new Location(0, 6));
+		c.putSelfInGrid(gr, new Location(2, 6));
 		blocks.add(c);
 		
 
@@ -86,15 +86,26 @@ public class TetrisBlockZ extends TetrisBlock {
 	 */
 	public void moveDown() {
 		if (rotationPos == 0) {
+			blocks.get(2).move();
+			blocks.get(1).move();
 			move();
-			for (TetrisBug bug: blocks) {
-				bug.move();
-			}
+			blocks.get(0).move();
 		} else if (rotationPos == 1) {
-			for (TetrisBug bug: blocks) {
-				bug.move();
-			}
+			blocks.get(1).move();
 			move();
+			blocks.get(0).move();
+			blocks.get(2).move();
+		} else if (rotationPos == 2) {
+			blocks.get(0).move();
+			move();
+			blocks.get(2).move();
+			blocks.get(1).move();
+			
+		} else if (rotationPos == 3) {
+			blocks.get(2).move();
+			blocks.get(1).move();
+			move();
+			blocks.get(0).move();
 		}
 	}
 
@@ -104,9 +115,13 @@ public class TetrisBlockZ extends TetrisBlock {
 	 */
 	public boolean canMoveDown() {
 		if (rotationPos == 0)
-			return canMove() && blocks.get(1).canMove() && blocks.get(2).canMove();
+			return blocks.get(2).canMove() && blocks.get(1).canMove();
 		else if (rotationPos == 1)
-			return blocks.get(0).canMove() && blocks.get(1).canMove();
+			return blocks.get(0).canMove() && blocks.get(1).canMove() && canMove();
+		else if (rotationPos == 2)
+			return blocks.get(2).canMove() && blocks.get(0).canMove();
+		else if (rotationPos == 3)
+			return blocks.get(2).canMove() && blocks.get(1).canMove();
 		else
 			return true;
 	}
@@ -120,17 +135,17 @@ public class TetrisBlockZ extends TetrisBlock {
 		for (TetrisBug tb : blocks)
 			tb.setDirection(90);
 		if (rotationPos == 0) {
-			if (blocks.get(2).canMove() && canMove()) {
+			if (blocks.get(2).canMove() && canMove() && blocks.get(0).canMove() && blocks.get(1).canMove()) {
 				move();
 				blocks.get(2).move();
 				blocks.get(0).move();
 				blocks.get(1).move();
 			}
 		} else if (rotationPos == 1) {
-			if (canMove() && blocks.get(1).canMove() && blocks.get(2).canMove()) {
-				move();
-				blocks.get(1).move();
+			if (blocks.get(2).canMove()) {
 				blocks.get(2).move();
+				blocks.get(1).move();
+				move();
 				blocks.get(0).move();
 			}
 		}
@@ -146,18 +161,21 @@ public class TetrisBlockZ extends TetrisBlock {
 		for (TetrisBug tb : blocks)
 			tb.setDirection(-90);
 		if (rotationPos == 0) {
-			if (blocks.get(0).canMove() && blocks.get(1).canMove()) {
+			if (blocks.get(2).canMove() && canMove() && blocks.get(0).canMove() && blocks.get(1).canMove()) {
 				blocks.get(0).move();
 				blocks.get(1).move();
 				move();
 				blocks.get(2).move();
 			}
 		} else if (rotationPos == 1) {
-			if (blocks.get(0).canMove() && blocks.get(1).canMove() && blocks.get(2).canMove()) {
+			if (blocks.get(0).canMove()) {
 				blocks.get(0).move();
+				move();
 				blocks.get(1).move();
 				blocks.get(2).move();
-				move();
+				
+				
+				
 			}
 		}
 
@@ -175,11 +193,11 @@ public class TetrisBlockZ extends TetrisBlock {
 		if (rotationPos == 0) {
 			newLoc = new Location(blocks.get(0).getLocation().getRow() + 1,
 					blocks.get(0).getLocation().getCol() - 1);
-			newLoc1 = new Location(blocks.get(1).getLocation().getRow() + 1,
+			newLoc1 = new Location(blocks.get(1).getLocation().getRow() - 1,
 					blocks.get(1).getLocation().getCol() + 1);
-			newLoc2 = new Location(blocks.get(2).getLocation().getRow(),
-					blocks.get(2).getLocation().getCol() - 2);
-			if (gr.isValid(newLoc1) && gr.get(newLoc1) == null) {
+			newLoc2 = new Location(blocks.get(2).getLocation().getRow() - 2,
+					blocks.get(2).getLocation().getCol() + 2);
+			if (gr.isValid(newLoc1) && gr.get(newLoc1) == null && gr.isValid(newLoc) && gr.get(newLoc) == null && gr.isValid(newLoc2) && gr.get(newLoc2) == null) {
 				blocks.get(1).moveTo(newLoc1);
 				blocks.get(0).moveTo(newLoc);
 				blocks.get(2).moveTo(newLoc2);
@@ -188,12 +206,11 @@ public class TetrisBlockZ extends TetrisBlock {
 		} else if (rotationPos == 1) {
 			newLoc = new Location(blocks.get(0).getLocation().getRow() - 1,
 					blocks.get(0).getLocation().getCol() + 1);
-			newLoc1 = new Location(blocks.get(1).getLocation().getRow() - 1,
+			newLoc1 = new Location(blocks.get(1).getLocation().getRow() + 1,
 					blocks.get(1).getLocation().getCol() - 1);
-			newLoc2 = new Location(blocks.get(2).getLocation().getRow(),
-					blocks.get(2).getLocation().getCol() + 2);
-			if (gr.isValid(newLoc1) && gr.get(newLoc1) == null || 
-					gr.isValid(newLoc2) && gr.get(newLoc2) == null) {
+			newLoc2 = new Location(blocks.get(2).getLocation().getRow() + 2,
+					blocks.get(2).getLocation().getCol() - 2);
+			if (gr.isValid(newLoc1) && gr.get(newLoc1) == null && gr.isValid(newLoc) && gr.get(newLoc) == null && gr.isValid(newLoc2) && gr.get(newLoc2) == null) {
 				blocks.get(0).moveTo(newLoc);
 				blocks.get(1).moveTo(newLoc1);
 				blocks.get(2).moveTo(newLoc2);

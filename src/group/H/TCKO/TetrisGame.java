@@ -74,7 +74,7 @@ public class TetrisGame {
 	public static void nextTetrisBlock() {
 
 		removeCompleteRows();
-		TetrisBlock randomBlock = new TetrisBlock();//default 2block piece
+		TetrisBlock randomBlock = new TetrisBlockI();//default 2block piece
 		//choose random block
 		int randNum = (int)(Math.random()*7)+1;//random number between 1 and 7
 		//if(randNum == 1)
