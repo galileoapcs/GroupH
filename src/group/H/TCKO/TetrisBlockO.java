@@ -31,19 +31,13 @@ public class TetrisBlockO extends TetrisBlock{
 		blocks = super.blocks;
 		gr = super.gr;
 		
-		if (gr.get(new Location(0, 5)) != null
-				|| gr.get(new Location(0, 6)) != null || gr.get(new Location(1,6)) != null) {
+		if (gr.get(new Location(0, 6)) != null || gr.get(new Location(1,6)) != null) {
 			javax.swing.JOptionPane.showMessageDialog(null, "Score: "
 					+ TetrisGame.score, "GAME OVER!", 0);
 			System.exit(0);
 		}
-		putSelfInGrid(gr, new Location(1, 5));
 		
 		TetrisBug a;
-		// create TetrisBugs for ArrayList blocks and put them in Grid gr
-		a = new TetrisBug(Color.yellow);
-		a.putSelfInGrid(gr, new Location(0, 5));
-		blocks.add(a);
 		a = new TetrisBug(Color.yellow);
 		a.putSelfInGrid(gr, new Location(0, 6));
 		blocks.add(a);
