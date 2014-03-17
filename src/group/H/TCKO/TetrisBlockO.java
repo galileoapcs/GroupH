@@ -26,21 +26,19 @@ public class TetrisBlockO extends TetrisBlock{
 	 * default constructor
 	 */
 	public TetrisBlockO() {
-		super(Color.yellow);
-		rotationPos = 0;
-		gr = TetrisGame.world.getGrid();
+		super();
+		rotationPos = super.rotationPos;
+		blocks = super.blocks;
+		gr = super.gr;
 		
-		// ==> LAMEST GAME OVER EVER !!! <==
-		// if the Grid does not have room for the TetrisBlock.. GameOver
 		if (gr.get(new Location(0, 5)) != null
-				|| gr.get(new Location(1, 5)) != null) {
+				|| gr.get(new Location(0, 6)) != null || gr.get(new Location(1,6)) != null) {
 			javax.swing.JOptionPane.showMessageDialog(null, "Score: "
 					+ TetrisGame.score, "GAME OVER!", 0);
 			System.exit(0);
 		}
 		putSelfInGrid(gr, new Location(1, 5));
 		
-		blocks = new ArrayList<TetrisBug>();
 		TetrisBug a;
 		// create TetrisBugs for ArrayList blocks and put them in Grid gr
 		a = new TetrisBug(Color.yellow);
