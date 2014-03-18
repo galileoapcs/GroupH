@@ -43,9 +43,6 @@ public class TetrisBlockT extends TetrisBlock {
 					+ TetrisGame.score, "GAME OVER!", 0);
 			System.exit(0);
 		}
-		blocks.get(0).moveTo(new Location(1, 4));
-		moveTo(new Location(0,5));
-		blocks.get(0).moveTo(new Location(1,5));
 		TetrisBug b;
 		TetrisBug c;
 		// create TetrisBugs for ArrayList blocks and put them in Grid gr
@@ -89,24 +86,24 @@ public class TetrisBlockT extends TetrisBlock {
 	 */
 	public void moveDown() {
 		if (rotationPos == 0) {
-			for (TetrisBug bug: blocks) {
-				bug.move();
-			}
-			move();
-		} else if (rotationPos == 1) {
-			move();
 			blocks.get(1).move();
-			blocks.get(0).move();
 			blocks.get(2).move();
+			move();
+			blocks.get(0).move();
+		} else if (rotationPos == 1) {
+			blocks.get(2).move();
+			move();
+			blocks.get(0).move();
+			blocks.get(1).move();
 		} else if (rotationPos == 2) {
+			blocks.get(0).move();
+			blocks.get(1).move();
+			blocks.get(2).move();
 			move();
-			for (TetrisBug bug: blocks) {
-				bug.move();
-			}
 		} else if (rotationPos == 3) {
-			move();
 			blocks.get(2).move();
 			blocks.get(0).move();
+			move();
 			blocks.get(1).move();
 		}
 	}
@@ -117,13 +114,13 @@ public class TetrisBlockT extends TetrisBlock {
 	 */
 	public boolean canMoveDown() {
 		if (rotationPos == 0)
-			return blocks.get(1).canMove() && blocks.get(2).canMove();
+			return blocks.get(1).canMove() && blocks.get(2).canMove() && canMove();
 		else if (rotationPos == 1)
-			return blocks.get(1).canMove() && canMove();
+			return blocks.get(2).canMove() && blocks.get(1).canMove();
 		else if (rotationPos == 2)
-			return blocks.get(1).canMove() && canMove() && blocks.get(2).canMove();
+			return blocks.get(1).canMove() && blocks.get(0).canMove() && blocks.get(2).canMove();
 		else if (rotationPos == 3)
-			return blocks.get(2).canMove() && canMove();
+			return blocks.get(2).canMove() && blocks.get(0).canMove();
 		else
 			return true;
 	}
@@ -137,31 +134,31 @@ public class TetrisBlockT extends TetrisBlock {
 		for (TetrisBug tb : blocks)
 			tb.setDirection(90);
 		if (rotationPos == 0) {
-			if (blocks.get(2).canMove() && canMove()) {
-				move();
-				blocks.get(2).move();
+			if (blocks.get(2).canMove() && blocks.get(0).canMove()) {
 				blocks.get(0).move();
+				blocks.get(2).move();
+				move();
 				blocks.get(1).move();
 			}
 		} else if (rotationPos == 1) {
-			if (blocks.get(1).canMove() && blocks.get(2).canMove() && blocks.get(0).canMove()) {
+			if (canMove() && blocks.get(2).canMove() && blocks.get(0).canMove()) {
+				move();
 				blocks.get(1).move();
 				blocks.get(2).move();
 				blocks.get(0).move();
-				move();
 			}
 		} else if (rotationPos == 2) {
-			if (blocks.get(1).canMove() && canMove()) {
+			if (blocks.get(0).canMove() && blocks.get(2).canMove()) {
+				blocks.get(0).move();
 				move();
 				blocks.get(1).move();
-				blocks.get(0).move();
 				blocks.get(2).move();
 			}
 		} else if (rotationPos == 3) {
-			if (blocks.get(2).canMove() && canMove()) {
-				move();
-				blocks.get(2).move();
+			if (blocks.get(1).canMove() && blocks.get(0).canMove() && blocks.get(2).canMove()) {
 				blocks.get(0).move();
+				blocks.get(2).move();
+				move();
 				blocks.get(1).move();
 			}
 		}
@@ -178,23 +175,23 @@ public class TetrisBlockT extends TetrisBlock {
 			tb.setDirection(-90);
 		if (rotationPos == 0) {
 			if (blocks.get(1).canMove() && canMove()) {
-				move();
-				blocks.get(1).move();
 				blocks.get(0).move();
+				blocks.get(1).move();
+				move();
 				blocks.get(2).move();
 			}
 		} else if (rotationPos == 1) {
-			if (blocks.get(1).canMove() && blocks.get(2).canMove()) {
+			if (blocks.get(1).canMove() && blocks.get(2).canMove() && blocks.get(0).canMove()) {
+				blocks.get(0).move();
 				blocks.get(1).move();
 				blocks.get(2).move();
-				blocks.get(0).move();
 				move();
 			}
 		} else if (rotationPos == 2) {
-			if (blocks.get(2).canMove() && canMove() && blocks.get(1).canMove()) {
-				move();
-				blocks.get(2).move();
+			if (blocks.get(2).canMove() && blocks.get(1).canMove()) {
 				blocks.get(0).move();
+				blocks.get(2).move();
+				move();
 				blocks.get(1).move();
 			}
 		} else if (rotationPos == 3) {
