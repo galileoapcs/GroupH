@@ -174,7 +174,7 @@ public class TetrisBlockT extends TetrisBlock {
 		for (TetrisBug tb : blocks)
 			tb.setDirection(-90);
 		if (rotationPos == 0) {
-			if (blocks.get(1).canMove() && canMove()) {
+			if (blocks.get(1).canMove() && blocks.get(0).canMove()) {
 				blocks.get(0).move();
 				blocks.get(1).move();
 				move();
@@ -189,17 +189,17 @@ public class TetrisBlockT extends TetrisBlock {
 			}
 		} else if (rotationPos == 2) {
 			if (blocks.get(2).canMove() && blocks.get(1).canMove()) {
-				blocks.get(0).move();
+				blocks.get(1).move();
 				blocks.get(2).move();
 				move();
-				blocks.get(1).move();
+				blocks.get(0).move();
 			}
 		} else if (rotationPos == 3) {
-			if (blocks.get(2).canMove() && canMove()) {
+			if (blocks.get(2).canMove() && canMove() && blocks.get(1).canMove()) {
 				blocks.get(2).move();
-				blocks.get(0).move();
 				blocks.get(1).move();
 				move();
+				blocks.get(0).move();
 			}
 		}
 
@@ -215,29 +215,36 @@ public class TetrisBlockT extends TetrisBlock {
 		Location newLoc1;
 		Location newLoc2;
 		if (rotationPos == 0) {
-			newLoc = new Location(blocks.get(0).getLocation().getRow() + 1,
-					blocks.get(0).getLocation().getCol() - 1);
-			newLoc1 = new Location(blocks.get(1).getLocation().getRow() + 1,
-					blocks.get(1).getLocation().getCol() + 1);
-			newLoc2 = new Location(blocks.get(2).getLocation().getRow(),
-					blocks.get(2).getLocation().getCol() - 2);
-			if (gr.isValid(newLoc1) && gr.get(newLoc1) == null) {
-				blocks.get(1).moveTo(newLoc1);
-				blocks.get(0).moveTo(newLoc);
+			newLoc2 = new Location(blocks.get(2).getLocation().getRow() + 1,
+					blocks.get(2).getLocation().getCol() - 1);
+			if (gr.isValid(newLoc2) && gr.get(newLoc2) == null) {
 				blocks.get(2).moveTo(newLoc2);
 				rotationPos = 1;
 			}
 		} else if (rotationPos == 1) {
-			newLoc = new Location(blocks.get(0).getLocation().getRow() - 1,
+			newLoc = new Location(blocks.get(0).getLocation().getRow() + 1,
 					blocks.get(0).getLocation().getCol() + 1);
-			newLoc1 = new Location(blocks.get(1).getLocation().getRow() - 1,
-					blocks.get(1).getLocation().getCol() - 1);
-			newLoc2 = new Location(blocks.get(2).getLocation().getRow(),
-					blocks.get(2).getLocation().getCol() + 2);
-			if (gr.isValid(newLoc1) && gr.get(newLoc1) == null || 
-					gr.isValid(newLoc2) && gr.get(newLoc2) == null) {
+			if (gr.isValid(newLoc) && gr.get(newLoc) == null) {
 				blocks.get(0).moveTo(newLoc);
+				rotationPos = 2;
+			}		
+		} else if (rotationPos == 2) {
+			newLoc1 = new Location(blocks.get(1).getLocation().getRow() - 1,
+					blocks.get(1).getLocation().getCol() + 1);
+			if (gr.isValid(newLoc1) && gr.get(newLoc1) == null) {
 				blocks.get(1).moveTo(newLoc1);
+				rotationPos = 3;
+			}		
+		} else if (rotationPos == 3) {
+			newLoc = new Location(blocks.get(0).getLocation().getRow() - 1,
+					blocks.get(0).getLocation().getCol() - 1);
+			newLoc1 = new Location(blocks.get(1).getLocation().getRow() + 1,
+					blocks.get(1).getLocation().getCol() - 1);
+			newLoc2 = new Location(blocks.get(2).getLocation().getRow() - 1,
+					blocks.get(2).getLocation().getCol() + 1);
+			if (gr.isValid(newLoc1) && gr.get(newLoc1) == null) {
+				blocks.get(1).moveTo(newLoc1);
+				blocks.get(0).moveTo(newLoc);
 				blocks.get(2).moveTo(newLoc2);
 				rotationPos = 0;
 			}		

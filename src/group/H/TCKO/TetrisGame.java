@@ -77,20 +77,20 @@ public class TetrisGame {
 		TetrisBlock randomBlock = null;//default 2block piece
 		//choose random block
 		int randNum = (int)(Math.random()*7)+1;//random number between 1 and 7
-		//if(randNum == 1)
-		// randomBlock = new TetrisBlockO();
-		//if(randNum == 2)
-		// randomBlock = new TetrisBlockI();
-		//if(randNum == 3)
-		// randomBlock = new TetrisBlockT();
-		//if(randNum == 4)
-		// randomBlock = new TetrisBlockL();
-		//if(randNum == 5)
-		// randomBlock = new TetrisBlock_L();
-		//if(randNum == 6)
-		// randomBlock = new TetrisBlockZ();
-		//if(randNum == 7)
-		// randomBlock = new TetrisBlock_Z();
+		if(randNum == 1)
+			randomBlock = new TetrisBlockO();
+		if(randNum == 2)
+			randomBlock = new TetrisBlockI();
+		if(randNum == 3)
+			randomBlock = new TetrisBlockT();
+		if(randNum == 4)
+			randomBlock = new TetrisBlockL();
+		if(randNum == 5)
+			randomBlock = new TetrisBlock_L();
+		if(randNum == 6)
+			randomBlock = new TetrisBlockZ();
+		if(randNum == 7)
+			randomBlock = new TetrisBlock_Z();
 
 		currentBlock = randomBlock;
 	}
