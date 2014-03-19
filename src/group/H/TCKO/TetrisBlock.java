@@ -23,6 +23,8 @@ public class TetrisBlock extends TetrisBug {
 	 * constructor
 	 */
 	protected ArrayList<TetrisBug> blocks;
+	
+	protected boolean current;
 	/**
 	 * used as a convenient reference to the Grid
 	 */
@@ -35,6 +37,7 @@ public class TetrisBlock extends TetrisBug {
 		super(Color.blue);
 		rotationPos = 0;
 		gr = TetrisGame.world.getGrid();
+		current = false;
 
 		// ==> LAMEST GAME OVER EVER !!! <==
 		// if the Grid does not have room for the TetrisBlock.. GameOver
@@ -56,6 +59,20 @@ public class TetrisBlock extends TetrisBug {
 		// TetrisBlock subclasses will add two more TetrisBug objects to blocks
 
 	}
+	
+	public void setCurrent(boolean c) {
+		current = c;
+	}
+	
+	public void moveEntireBlock(Location loc) {
+		int rows = loc.getRow() - getLocation().getRow();
+		int cols = loc.getCol() - getLocation().getCol();
+		for (TetrisBug tb: blocks) {
+			Location newLoc = new Location(tb.getLocation().getRow() + rows, tb.getLocation().getCol() + cols);
+			tb.moveTo(newLoc);
+		}
+		moveTo(loc);
+	}
 
 	/**
 	 * TetrisBlock and its TetrisBugs must face down (direction 180) If they can
@@ -66,10 +83,12 @@ public class TetrisBlock extends TetrisBug {
 		setDirection(180);
 		for (TetrisBug tb : blocks)
 			tb.setDirection(180);
-		if (canMoveDown())
-			moveDown();
-		else if (!TetrisGame.currentBlock.canMoveDown())
-			TetrisGame.nextTetrisBlock();
+		if (current) {
+			if (canMoveDown())
+				moveDown();
+			else if (!TetrisGame.currentBlock.canMoveDown())
+				TetrisGame.nextTetrisBlock();
+		}
 	}
 	
 	public void dropDown() {

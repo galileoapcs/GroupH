@@ -28,6 +28,8 @@ public class TetrisBlockL extends TetrisBlock {
 	 * used as a convenient reference to the Grid
 	 */
 	protected Grid<Actor> gr;
+	
+	protected boolean current;
 
 	/**
 	 * default constructor
@@ -37,6 +39,7 @@ public class TetrisBlockL extends TetrisBlock {
 		rotationPos = super.rotationPos;
 		blocks = super.blocks;
 		gr = super.gr;
+		current = super.current;
 		if (gr.get(new Location(2, 5)) != null
 				|| gr.get(new Location(2, 6)) != null) {
 			javax.swing.JOptionPane.showMessageDialog(null, "Score: "
@@ -56,21 +59,6 @@ public class TetrisBlockL extends TetrisBlock {
 
 		// TetrisBlock subclasses will add two more TetrisBug objects to blocks
 
-	}
-
-	/**
-	 * TetrisBlock and its TetrisBugs must face down (direction 180) If they can
-	 * move down, they will. Otherwise, it will ask TetrisGame to create a new
-	 * TetrisBlock since this one is stuck at the bottom.
-	 */
-	public void act() {
-		setDirection(180);
-		for (TetrisBug tb : blocks)
-			tb.setDirection(180);
-		if (canMoveDown())
-			moveDown();
-		else if (!TetrisGame.currentBlock.canMoveDown())
-			TetrisGame.nextTetrisBlock();
 	}
 	
 	public void dropDown() {

@@ -26,6 +26,7 @@ public class TetrisGame {
 	 * Its direction and rotation is controlled by the keyboard arrow keys.
 	 */
 	public static TetrisBlock currentBlock;
+	public static TetrisBlock nextBlock;
 
 	/**
 	 * The number of lines cleared during a the game
@@ -43,6 +44,7 @@ public class TetrisGame {
 			world.add(new Location(i,11),new Rock());
 			world.add(new Location(i,0),new Rock());
 		}
+		setNextBlock();
 		nextTetrisBlock();
 		//needed code for keyboard event handling
 		java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager()
@@ -74,6 +76,15 @@ public class TetrisGame {
 	public static void nextTetrisBlock() {
 
 		removeCompleteRows();
+		currentBlock = nextBlock;
+		currentBlock.moveEntireBlock(new Location(8,14));
+		setNextBlock();
+		currentBlock.moveEntireBlock(new Location(1,5));
+		currentBlock.setCurrent(true);
+		
+	}
+	
+	public static void setNextBlock() {
 		TetrisBlock randomBlock = null;//default 2block piece
 		//choose random block
 		int randNum = (int)(Math.random()*7)+1;//random number between 1 and 7
@@ -92,8 +103,10 @@ public class TetrisGame {
 		if(randNum == 7)
 			randomBlock = new TetrisBlock_Z();
 
-		currentBlock = randomBlock;
+		nextBlock = randomBlock;
+		nextBlock.moveEntireBlock(new Location(3,14));
 	}
+	
 	/**
 	 * checks each row 1 through 18 (skip row 0) for full rows
 	 * if a row is full, then remove the actor from each cell in that row

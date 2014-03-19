@@ -28,6 +28,8 @@ public class TetrisBlockZ extends TetrisBlock {
 	 * used as a convenient reference to the Grid
 	 */
 	protected Grid<Actor> gr;
+	
+	protected boolean current;
 
 	/**
 	 * default constructor
@@ -37,6 +39,7 @@ public class TetrisBlockZ extends TetrisBlock {
 		rotationPos = super.rotationPos;
 		blocks = super.blocks;
 		gr = super.gr;
+		current = super.current;
 		if (gr.get(new Location(1, 4)) != null
 				|| gr.get(new Location(0, 6)) != null) {
 			javax.swing.JOptionPane.showMessageDialog(null, "Score: "
@@ -56,21 +59,6 @@ public class TetrisBlockZ extends TetrisBlock {
 
 		// TetrisBlock subclasses will add two more TetrisBug objects to blocks
 
-	}
-
-	/**
-	 * TetrisBlock and its TetrisBugs must face down (direction 180) If they can
-	 * move down, they will. Otherwise, it will ask TetrisGame to create a new
-	 * TetrisBlock since this one is stuck at the bottom.
-	 */
-	public void act() {
-		setDirection(180);
-		for (TetrisBug tb : blocks)
-			tb.setDirection(180);
-		if (canMoveDown())
-			moveDown();
-		else if (!TetrisGame.currentBlock.canMoveDown())
-			TetrisGame.nextTetrisBlock();
 	}
 	
 	public void dropDown() {
@@ -179,7 +167,7 @@ public class TetrisBlockZ extends TetrisBlock {
 					blocks.get(1).getLocation().getCol() + 1);
 			newLoc2 = new Location(blocks.get(2).getLocation().getRow(),
 					blocks.get(2).getLocation().getCol() - 2);
-			if (gr.isValid(newLoc1) && gr.get(newLoc1) == null) {
+			if (gr.isValid(newLoc1) && gr.get(newLoc1) == null || gr.isValid(newLoc2) && gr.get(newLoc2) == null) {
 				blocks.get(1).moveTo(newLoc1);
 				blocks.get(0).moveTo(newLoc);
 				blocks.get(2).moveTo(newLoc2);
