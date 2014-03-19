@@ -143,7 +143,7 @@ public class TetrisGame {
 	public static void removeCompleteRows() {
 		Grid<Actor> gr = world.getGrid();
 		
-		for (int row=1; row<gr.getNumRows(); row++) {
+		for (int row=gr.getNumRows(); row>1; row--) {
 			if (isFullRow(row)) {
 				for(int col=1; col<11; col++) {
 					gr.remove(new Location(row,col));

@@ -79,7 +79,7 @@ public class TetrisBlockO extends TetrisBlock{
 	 */
 	public boolean canMoveDown() {
 		if (rotationPos == 0)
-			return canMove();
+			return canMove() && blocks.get(2).canMove();
 		else
 			return true;
 	}
