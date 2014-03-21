@@ -31,7 +31,7 @@ public class TetrisGame {
 	/**
 	 * The number of lines cleared during a the game
 	 */
-	public static int score;
+	public static int score = 0;
 
 	/**
 	 * Handles game simulation and KeyEvent handling
@@ -44,6 +44,7 @@ public class TetrisGame {
 			world.add(new Location(i,11),new Rock());
 			world.add(new Location(i,0),new Rock());
 		}
+		world.setMessage("Score: " + score);
 		setNextBlock();
 		nextTetrisBlock();
 		//needed code for keyboard event handling
@@ -150,6 +151,7 @@ public class TetrisGame {
 				}
 				pushRowsDown(row);
 				score++;
+				world.setMessage("Score: " + score);
 			}
 		}
 	}
